@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ChangeGroupDto } from '../dto/change-group.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserGroupRepository } from '../repositories/user-group.repository';
@@ -61,11 +62,34 @@ export class UserService {
     });
   }
 
+  async changeGroup(id: number, changeGroupDto: ChangeGroupDto) {
+    const { userGroupId } = changeGroupDto;
+
+    const alreadyUser = await this.findOne(id);
+
+    const userGroup = await this.userGroupService.findOne(userGroupId);
+
+    return await this.userRepository.save({
+      ...alreadyUser,
+      group: userGroup,
+    });
+  }
+
   async remove(id: number) {
     const result = await this.userRepository.delete(id);
 
     if (result.affected === 0) {
       throw new NotFoundException(`User with id ${id} not found to delete`);
     }
+  }
+
+  async findByEmail(email: string) {
+    const user = await this.userRepository.findOne({ email });
+
+    if (!user) {
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
+
+    return user;
   }
 }

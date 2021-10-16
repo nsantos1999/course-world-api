@@ -27,7 +27,7 @@ export class User extends BaseEntity {
   @Column({ name: 'date_of_birth' })
   dateOfBirth: Date;
 
-  @OneToOne(() => UserGroup)
+  @OneToOne(() => UserGroup, { eager: true })
   @JoinColumn({ name: 'user_group_id' })
   group: UserGroup;
 
