@@ -2,6 +2,7 @@ import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/modules/user/services/user.service';
 import { PasswordEncryptionService } from 'src/shared/modules/password/services/password-encryption.service';
+import { JwtPayload } from '../@types/payload.types';
 import { LoginDto } from '../dto/login.dto';
 
 @Injectable()
@@ -28,7 +29,7 @@ export class AuthService {
       throw new UnauthorizedException('Email or password is invalid');
     }
 
-    const payload = {
+    const payload: JwtPayload = {
       id: user.id,
       email: user.email,
     };
