@@ -1,4 +1,4 @@
-import { Exclude } from 'class-transformer';
+import { classToPlain, Exclude } from 'class-transformer';
 import {
   BaseEntity,
   Column,
@@ -33,4 +33,8 @@ export class User extends BaseEntity {
 
   @Column({ name: 'updated_at' })
   updatedAt: Date;
+
+  toJSON() {
+    return classToPlain(this);
+  }
 }

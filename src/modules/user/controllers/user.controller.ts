@@ -8,18 +8,22 @@ import {
   Delete,
   Put,
   UsePipes,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/modules/auth/guards/jwt.guard';
+import { EncryptPasswordPipe } from 'src/shared/modules/password/pipes/encrypt-password.pipe';
 import { ChangeGroupDto } from '../dto/change-group.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
-import { CriptoPasswordPipe } from '../pipes/cripto-password.pipe';
+// import { CriptoPasswordPipe } from '../pipes/cripto-password.pipe';
 import { UserService } from '../services/user.service';
 
+@UseGuards(JwtAuthGuard)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @UsePipes(CriptoPasswordPipe)
+  @UsePipes(EncryptPasswordPipe)
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);

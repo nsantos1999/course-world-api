@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UseGuards } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { JwtAuthGuard } from 'src/modules/auth/guards/jwt.guard';
 import { ChangeGroupDto } from '../dto/change-group.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
-import { UserGroupRepository } from '../repositories/user-group.repository';
 import { UserRepository } from '../repositories/user.repository';
 import { UserGroupEnum } from '../types/user-group.enum';
 import { UserGroupService } from './user-group.service';
@@ -24,7 +24,6 @@ export class UserService {
       UserGroupEnum.STUDENT,
     );
 
-    console.log(userGroup);
     return await this.userRepository.save({
       email,
       name,
