@@ -15,7 +15,6 @@ export const DatabaseConfig: TypeOrmModuleOptionsWithSeeds = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
   schema: process.env.DB_SCHEMA,
-  sid: process.env.DB_SID,
   entities: ['dist/**/*.entity.js'],
   migrations: ['dist/database/migrations/**/*{.ts,.js}'],
   migrationsRun: true,
@@ -24,4 +23,7 @@ export const DatabaseConfig: TypeOrmModuleOptionsWithSeeds = {
   cli: { migrationsDir: 'src/database/migrations' },
   seeds: ['dist/database/seeds/**/*.js'],
   factories: ['dist/database/factories/**/*.js'],
+  ssl: {
+    rejectUnauthorized: false,
+  },
 };

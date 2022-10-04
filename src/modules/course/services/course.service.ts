@@ -21,7 +21,7 @@ export class CourseService {
 
   @UseGuards(JwtAuthGuard)
   async create(createCourseDto: CreateCourseDto, authUser: User) {
-    const { name, description, price, languagesIds } = createCourseDto;
+    const { name, description, price, languagesIds, modules } = createCourseDto;
 
     const languagesFounded = await this.languageService.findByIds(languagesIds);
 
@@ -31,6 +31,7 @@ export class CourseService {
       price,
       languages: languagesFounded,
       creatorUser: authUser,
+      modules,
     });
 
     return course;
@@ -50,8 +51,21 @@ export class CourseService {
     return course;
   }
 
-  update(id: number, updateCourseDto: UpdateCourseDto) {
-    return `This action updates a #${id} course`;
+  async update(id: number, updateCourseDto: UpdateCourseDto) {
+    const { name, description, price, languagesIds, modules } = updateCourseDto;
+
+    const courseToUpdate = await this.findOne(id);
+
+    const languagesFounded = await this.languageService.findByIds(languagesIds);
+
+    return this.courseRepository.save({
+      ...courseToUpdate,
+      name,
+      description,
+      price,
+      languages: languagesFounded,
+      modules,
+    });
   }
 
   async remove(id: number) {

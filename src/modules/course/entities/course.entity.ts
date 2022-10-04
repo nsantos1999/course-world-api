@@ -8,8 +8,10 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { CourseModule } from './course-module.entity';
 
 @Entity('courses')
 export class Course extends BaseEntity {
@@ -42,6 +44,11 @@ export class Course extends BaseEntity {
     },
   })
   languages: Language[];
+
+  @OneToMany(() => CourseModule, (module) => module.course, {
+    cascade: true,
+  })
+  modules: CourseModule[];
 
   @Column({ name: 'created_at' })
   createdAt: Date;
